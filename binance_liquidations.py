@@ -35,10 +35,10 @@ def read_msg(ws, msg):
 	# Check if long or short
 	if liq == "SELL":
 		direction = coin + " Long liq."
-		msg_discord = f":robot: **{direction}** | ${usd:.1f}k at {price:.0f} | {funding:.2f}% :hot_face:"
+		msg_discord = f":robot: **{direction}** | ${usd:.1f}k at {price:.0f} | {funding:.3f}% :hot_face:"
 	else:
 		direction = coin + " Short liq."
-		msg_discord = f":robot: **{direction}** | ${usd:.1f}k at {price:.0f} | {funding:.2f}% :rocket:"
+		msg_discord = f":robot: **{direction}** | ${usd:.1f}k at {price:.0f} | {funding:.3f}% :rocket:"
 
 	# Print timestamp and message
 	print(timestamp, "|", msg_discord)
