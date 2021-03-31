@@ -42,7 +42,7 @@ def read_msg(ws, msg):
 	if liq == "SELL":
 		direction = coin + " Long liq."
 		msg_discord = f":robot: **{direction}** | ${usd:.1f}k at {price:.0f} | {funding:.3f}% :hot_face:"
-	elif minute >= 50:
+	elif (minute >= 55) or (funding > 0.075):
 		direction = coin + " Short liq."
 		msg_discord = f":warning: **{direction} BUT be cautious** | ${usd:.1f}k at {price:.0f} | {funding:.3f}% :rocket:"
 	else:
