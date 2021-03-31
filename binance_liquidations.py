@@ -13,6 +13,11 @@ socket = base_url + "/ws/" + stream
 # Webhook settings
 url_wb = os.environ.get('DISCORD_WH')
 
+# From timestamp to date
+def age_function(timestamp):
+    age = datetime.fromtimestamp(timestamp)
+    return age
+
 # Funding function
 def funding_function(coin):
 	url = 'https://fapi.binance.com/fapi/v1/premiumIndex?symbol=' + coin + 'USDT'
@@ -25,9 +30,10 @@ def funding_function(coin):
 def read_msg(ws, msg):
 	# Get data from web-socket
 	timestamp = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+	minute = int(datetime.now().minute)
 	values = json.loads(msg)['o']
 	liq = json.loads(msg)['o']['S']
-	price = float(json.loads(msg)['o']['ap'])
+	price = price = float(json.loads(msg)['o']['ap'])
 	amount = float(json.loads(msg)['o']['q'])
 	usd = amount*price/1000 # In thousands
 	funding = funding_function(coin)
@@ -36,6 +42,9 @@ def read_msg(ws, msg):
 	if liq == "SELL":
 		direction = coin + " Long liq."
 		msg_discord = f":robot: **{direction}** | ${usd:.1f}k at {price:.0f} | {funding:.3f}% :hot_face:"
+	elif minute >= 50:
+		direction = coin + " Short liq."
+		msg_discord = f":warning: **{direction} BUT be cautious** | ${usd:.1f}k at {price:.0f} | {funding:.3f}% :rocket:"
 	else:
 		direction = coin + " Short liq."
 		msg_discord = f":robot: **{direction}** | ${usd:.1f}k at {price:.0f} | {funding:.3f}% :rocket:"
