@@ -20,7 +20,7 @@ def age_function(timestamp):
 
 # Funding function
 def funding_function(coin):
-	url = 'https://fapi.binance.com/fapi/v1/premiumIndex?symbol=' + coin + 'USDT'
+	url = 'https://fapi.binance.com/fapi/v1/premiumIndex?symbol=' + coin.upper() + 'USDT'
 	response = requests.get(url).text
 	value = json.loads(response)
 	funding = 100*float(value['lastFundingRate'])
@@ -40,10 +40,10 @@ def read_msg(ws, msg):
 	emoji = ":robot:"
 	alert_msg = ""
 
-	# For high funding or last minute pumps
+	# For high funding or last minute PA
 	if minute >= 55:
 		emoji = ":warning:"
-		alert_msg = " - Last min pump"
+		alert_msg = " - Last min PA"
 	elif funding > 0.075:
 		emoji = ":warning:"
 		alert_msg = " - High funding"
@@ -56,12 +56,13 @@ def read_msg(ws, msg):
 	# Check if long or short
 	if liq == "SELL":
 		direction = "Long liq"
-		msg_discord = f"{emoji} **{direction}{alert_msg}** | ${usd:.1f}k at {price:.0f} | {funding:.3f}% :hot_face:"
+		ending = ":hot_face:"
 	else:
 		direction = "Short liq"
-		msg_discord = f"{emoji} **{direction}{alert_msg}** | ${usd:.1f}k at {price:.0f} | {funding:.3f}% :rocket:"
+		ending = ":rocket:"
 
 	# Print timestamp and message
+	msg_discord = f"{emoji} **{direction}{alert_msg}** | ${usd:.1f}k at {price:.0f} | {funding:.3f}% {ending}"
 	print(timestamp, "|", msg_discord)
 
 	# Discord message for big liquidations
