@@ -37,17 +37,29 @@ def read_msg(ws, msg):
 	amount = float(json.loads(msg)['o']['q'])
 	usd = amount*price/1000 # In thousands
 	funding = funding_function(coin)
+	emoji = ":robot:"
+	alert_msg = ""
+
+	# For high funding or last minute pumps
+	if minute >= 55:
+		emoji = ":warning:"
+		alert_msg = " - Last min pump"
+	elif funding > 0.075:
+		emoji = ":warning:"
+		alert_msg = " - High funding"
+
+	# For massive liquidations
+	if usd > 900: # In thousands
+		emoji = ":lion:"
+		alert_msg = alert_msg + " - REKT"
 
 	# Check if long or short
 	if liq == "SELL":
-		direction = coin + " Long liq."
-		msg_discord = f":robot: **{direction}** | ${usd:.1f}k at {price:.0f} | {funding:.3f}% :hot_face:"
-	elif (minute >= 55) or (funding > 0.075):
-		direction = coin + " Short liq."
-		msg_discord = f":warning: **{direction} BUT be cautious** | ${usd:.1f}k at {price:.0f} | {funding:.3f}% :rocket:"
+		direction = "Long liq"
+		msg_discord = f"{emoji} **{direction}{alert_msg}** | ${usd:.1f}k at {price:.0f} | {funding:.3f}% :hot_face:"
 	else:
-		direction = coin + " Short liq."
-		msg_discord = f":robot: **{direction}** | ${usd:.1f}k at {price:.0f} | {funding:.3f}% :rocket:"
+		direction = "Short liq"
+		msg_discord = f"{emoji} **{direction}{alert_msg}** | ${usd:.1f}k at {price:.0f} | {funding:.3f}% :rocket:"
 
 	# Print timestamp and message
 	print(timestamp, "|", msg_discord)
