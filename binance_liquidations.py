@@ -48,11 +48,6 @@ def read_msg(ws, msg):
 		emoji = ":warning:"
 		alert_msg = " - High funding"
 
-	# For massive liquidations
-	if usd > 900: # In thousands
-		emoji = ":lion:"
-		alert_msg = alert_msg + " - REKT"
-
 	# Check if long or short
 	if liq == "SELL":
 		direction = "Long liq"
@@ -60,6 +55,12 @@ def read_msg(ws, msg):
 	else:
 		direction = "Short liq"
 		ending = ":rocket:"
+
+	# For massive liquidations
+	if usd > 900: # In thousands
+		emoji = ":lion:"
+		alert_msg = alert_msg + " - REKT"
+		ending = ":skull_crossbones:"
 
 	# Print timestamp and message
 	msg_discord = f"{emoji} **{direction}{alert_msg}** | ${usd:.1f}k at {price:.0f} | {funding:.3f}% {ending}"
