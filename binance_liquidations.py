@@ -15,7 +15,7 @@ url_wb = os.environ.get('DISCORD_WH')
 
 # From trade_time (ms) to date
 def ms_to_date(trade_time):
-	trade_time = datetime.fromtimestamp(trade_time/1000.0).strftime("%d-%m-%Y %H:%M:%S")
+	trade_time = datetime.fromtimestamp(trade_time/1000.0)
 	return trade_time
 
 # Funding function
@@ -29,13 +29,15 @@ def funding_function(coin):
 # Main function
 def read_msg(ws, msg):
 	# Get data from web-socket
-	timestamp = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+	timestamp = datetime.now() # For delay
+	timestamp_print = timestamp.strftime("%d-%m-%Y %H:%M:%S") # For console
 	minute = int(datetime.now().minute)
 	values = json.loads(msg)['o']
 	side = json.loads(msg)['o']['S']
 	price = float(json.loads(msg)['o']['ap'])
 	amount = float(json.loads(msg)['o']['q'])
 	trade_time = ms_to_date(int(json.loads(msg)['o']['T']))
+	delay = timestamp - trade_time
 	usd = amount*price/1000 # In thousands
 
 	# Get funding data
@@ -67,7 +69,7 @@ def read_msg(ws, msg):
 
 	# Print timestamp and message
 	msg_discord = f"{emoji} **{direction}{alert_msg}** | ${usd:.1f}k at {price:.0f} | {funding:.3f}% {ending}"
-	print(timestamp, "| Trade time:", trade_time, "|", msg_discord)
+	print(f"{timestamp_print} | Delay: {delay} | {msg_discord}")
 
 	# Discord message for big liquidations
 	usd_limit = 100 # In thousands
