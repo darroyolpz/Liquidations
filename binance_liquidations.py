@@ -1,7 +1,7 @@
 # https://binance-docs.github.io/apidocs/futures/en/#all-market-liquidation-order-streams
 import time, dateparser, json, sys, os, requests, websocket
 from discord_webhook import DiscordWebhook
-from datetime import datetime, timezone
+from datetime import datetime
 import pandas as pd
 
 # Web-socket
@@ -13,10 +13,10 @@ socket = base_url + "/ws/" + stream
 # Webhook settings
 url_wb = os.environ.get('DISCORD_WH')
 
-# From timestamp to date
-def age_function(timestamp):
-    age = datetime.fromtimestamp(timestamp)
-    return age
+# From trade_time (ms) to date
+def ms_to_date(trade_time):
+	trade_time = datetime.fromtimestamp(trade_time/1000.0).strftime("%d-%m-%Y %H:%M:%S")
+	return trade_time
 
 # Funding function
 def funding_function(coin):
@@ -32,10 +32,13 @@ def read_msg(ws, msg):
 	timestamp = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
 	minute = int(datetime.now().minute)
 	values = json.loads(msg)['o']
-	liq = json.loads(msg)['o']['S']
+	side = json.loads(msg)['o']['S']
 	price = price = float(json.loads(msg)['o']['ap'])
 	amount = float(json.loads(msg)['o']['q'])
+	trade_time = ms_to_date(int(json.loads(msg)['o']['T']))
 	usd = amount*price/1000 # In thousands
+
+	# Get funding data
 	funding = funding_function(coin)
 	emoji = ":robot:"
 	alert_msg = ""
@@ -49,7 +52,7 @@ def read_msg(ws, msg):
 		alert_msg = " - High funding"
 
 	# Check if long or short
-	if liq == "SELL":
+	if side == "SELL":
 		direction = "Long liq"
 		ending = ":hot_face:"
 	else:
@@ -59,12 +62,12 @@ def read_msg(ws, msg):
 	# For massive liquidations
 	if usd > 900: # In thousands
 		emoji = ":lion:"
-		alert_msg = alert_msg + " - REKT"
-		ending = ":skull_crossbones:"
+		alert_msg = alert_msg + " - REKT BIGLY"
+		ending = ending + ":skull_crossbones:"
 
 	# Print timestamp and message
 	msg_discord = f"{emoji} **{direction}{alert_msg}** | ${usd:.1f}k at {price:.0f} | {funding:.3f}% {ending}"
-	print(timestamp, "|", msg_discord)
+	print(timestamp, "| Trade time:", trade_time, "|", msg_discord)
 
 	# Discord message for big liquidations
 	usd_limit = 100 # In thousands
