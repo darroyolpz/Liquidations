@@ -33,7 +33,7 @@ def read_msg(ws, msg):
 	minute = int(datetime.now().minute)
 	values = json.loads(msg)['o']
 	side = json.loads(msg)['o']['S']
-	price = price = float(json.loads(msg)['o']['ap'])
+	price = float(json.loads(msg)['o']['ap'])
 	amount = float(json.loads(msg)['o']['q'])
 	trade_time = ms_to_date(int(json.loads(msg)['o']['T']))
 	usd = amount*price/1000 # In thousands
