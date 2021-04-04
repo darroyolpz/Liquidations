@@ -1,4 +1,5 @@
 # https://binance-docs.github.io/apidocs/futures/en/#all-market-liquidation-order-streams
+# https://www.youtube.com/watch?v=IEEhzQoKtQU
 import time, dateparser, json, sys, os, requests, websocket, threading
 from discord_webhook import DiscordWebhook
 from datetime import datetime
@@ -33,7 +34,7 @@ def funding_function(symbol="BTCUSDT"):
 
 		# Wait during ten minutes
 		timestamp_print = datetime.now().strftime("%d-%m-%Y %H:%M:%S") # For console
-		print(f"{timestamp_print} || New funding = {funding}%")
+		print(f"{timestamp_print} | New funding = {funding}%")
 		time.sleep(600)
 
 # Get funding from txt
@@ -80,7 +81,7 @@ def read_msg(ws, msg):
 	# For massive liquidations
 	if usd > 900: # In thousands
 		emoji = ":lion:"
-		alert_msg = alert_msg + " - REKT BIGLY"
+		alert_msg = alert_msg + " - REKT"
 		ending = ":skull_crossbones:" + ending
 
 	# Print timestamp and message
