@@ -63,10 +63,10 @@ def read_msg(ws, msg):
 
 	# For high funding or last minute PA
 	if minute >= 55:
-		emoji = ":warning:"
+		emoji = ":alarm_clock:"
 		alert_msg = " - Last min PA"
 	elif funding > 0.075:
-		emoji = ":warning:"
+		emoji = ":dollar:"
 		alert_msg = " - High funding"
 
 	# Check if long or short
