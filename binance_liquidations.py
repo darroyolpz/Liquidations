@@ -39,19 +39,13 @@ def read_msg(ws, msg):
 	trade_time = ms_to_date(int(json.loads(msg)['o']['T']))
 	delay = timestamp - trade_time
 	usd = amount*price/1000 # In thousands
-
-	# Get funding data
-	funding = funding_function(coin)
 	emoji = ":robot:"
 	alert_msg = ""
 
-	# For high funding or last minute PA
+	# For last minute PA
 	if minute >= 55:
 		emoji = ":warning:"
 		alert_msg = " - Last min PA"
-	elif funding > 0.075:
-		emoji = ":warning:"
-		alert_msg = " - High funding"
 
 	# Check if long or short
 	if side == "SELL":
@@ -68,7 +62,7 @@ def read_msg(ws, msg):
 		ending = ending + ":skull_crossbones:"
 
 	# Print timestamp and message
-	msg_discord = f"{emoji} **{direction}{alert_msg}** | ${usd:.1f}k at {price:.0f} | {funding:.3f}% {ending}"
+	msg_discord = f"{emoji} **{direction}{alert_msg}** | ${usd:.1f}k at {price:.0f} {ending}"
 	print(f"{timestamp_print} | Delay: {delay} | {msg_discord}")
 
 	# Discord message for big liquidations
