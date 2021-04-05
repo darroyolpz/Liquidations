@@ -28,11 +28,11 @@ def funding_function(symbol="BTCUSDT"):
 		url = f"https://fapi.binance.com/fapi/v1/premiumIndex?symbol={symbol.upper()}" 
 		response = requests.get(url).text
 		value = json.loads(response)
-		funding = str(100*float(value['lastFundingRate']))
+		funding = 100*float(value['lastFundingRate'])
 
 		# Wait during ten minutes
 		timestamp_print = datetime.now().strftime("%d-%m-%Y %H:%M:%S") # For console
-		print(f"{timestamp_print} | New funding = {funding}%")
+		print(f"{timestamp_print} | New funding = {funding:.3f}%")
 		time.sleep(600)
 
 # What to do when a message arrives function
