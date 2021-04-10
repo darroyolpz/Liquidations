@@ -30,10 +30,10 @@ def funding_function(symbol="BTCUSDT"):
 		value = json.loads(response)
 		funding = 100*float(value['lastFundingRate'])
 
-		# Wait during ten minutes
+		# Wait during one minute
 		timestamp_print = datetime.now().strftime("%d-%m-%Y %H:%M:%S") # For console
 		print(f"{timestamp_print} | New funding = {funding:.3f}%")
-		time.sleep(600)
+		time.sleep(60)
 
 # What to do when a message arrives function
 def read_msg(ws, msg):
@@ -55,7 +55,7 @@ def read_msg(ws, msg):
 	if minute >= 55:
 		emoji = ":alarm_clock:"
 		alert_msg = " - Last min PA"
-	elif funding > 0.075:
+	elif funding > 0.07:
 		emoji = ":dollar:"
 		alert_msg = " - High funding"
 
@@ -63,15 +63,25 @@ def read_msg(ws, msg):
 	if side == "SELL":
 		direction = "Long liq"
 		ending = ":hot_face:"
+
+		# Best long entries
+		if funding < 0.02:
+			emoji = ":white_check_mark:"
+			alert_msg += " - BTFD"
 	else:
 		direction = "Short liq"
 		ending = ":rocket:"
 
+		# Best short entries
+		if funding > 0.2:
+			emoji = ":warning:"
+			alert_msg += " - STFB" 
+
 	# For massive liquidations
 	if usd > 900: # In thousands
 		emoji = ":lion:"
-		alert_msg = alert_msg + " - REKT"
-		ending = ":skull_crossbones:" + ending
+		alert_msg += " - REKT"
+		ending += ":skull_crossbones:"
 
 	# Print timestamp and message
 	msg_discord = f"{emoji} **{direction}{alert_msg}** | ${usd:.1f}k at {price:.0f} | {funding:.3f}% {ending}"
