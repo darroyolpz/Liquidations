@@ -20,8 +20,8 @@ def ms_to_date(trade_time):
 	trade_time = datetime.fromtimestamp(trade_time/1000.0)
 	return trade_time
 
-# Funding function to export as txt
-def funding_function(symbol="BTCUSDT"):
+# Funding function
+def funding_function(symbol=symbol):
 	# Run this function forever
 	while True:
 		global funding # Make funding accessible 
