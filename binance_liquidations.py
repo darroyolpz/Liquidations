@@ -45,9 +45,6 @@ def read_msg(ws, msg):
 	side = json.loads(msg)['o']['S']
 	price = float(json.loads(msg)['o']['ap'])
 	amount = float(json.loads(msg)['o']['q'])
-	trade_time = ms_to_date(int(json.loads(msg)['o']['T']))
-	delay = timestamp - trade_time
-	delay = int(1000*delay.total_seconds()) # In milliseconds
 	usd = amount*price/1000 # In thousands
 	emoji = ":robot:"
 	alert_msg = ""
@@ -86,13 +83,13 @@ def read_msg(ws, msg):
 
 	# Print timestamp and message
 	msg_discord = f"{emoji} **{direction}{alert_msg}** | ${usd:.1f}k at {price:.0f} | {funding:.3f}% {ending}"
-	print(f"{timestamp_print} | Delay: {delay} ms | {msg_discord}")
+	print(f"{timestamp_print} | {msg_discord}")
 
 	# Discord message for big liquidations
 	usd_limit = 100 # In thousands
 	if usd > usd_limit:
 		webhook = DiscordWebhook(url=url_wb, content=msg_discord)
-		#response = webhook.execute()
+		response = webhook.execute()
 
 # Main websocket_function
 def websocket_function():
