@@ -22,21 +22,31 @@ def ms_to_date(trade_time):
 
 # Funding function
 def funding_function(symbol=symbol):
-	# Run this function forever
-	while True:
-		global funding # Make funding accessible 
-		url = f"https://fapi.binance.com/fapi/v1/premiumIndex?symbol={symbol.upper()}" 
-		response = requests.get(url).text
-		value = json.loads(response)
-		funding = 100*float(value['lastFundingRate'])
+	try:
+		# Run this function forever
+		while True:
+			global funding # Make funding accessible 
+			url = f"https://fapi.binance.com/fapi/v1/premiumIndex?symbol={symbol.upper()}" 
+			response = requests.get(url).text
+			value = json.loads(response)
+			funding = 100*float(value['lastFundingRate'])
 
-		# Wait during two minutes
-		timestamp_print = datetime.now().strftime("%d-%m-%Y %H:%M:%S") # For console
-		print(f"{timestamp_print} | New funding = {funding:.3f}%")
-		time.sleep(120)
+			# Wait during two minutes
+			timestamp_print = datetime.now().strftime("%d-%m-%Y %H:%M:%S") # For console
+			print(f"{timestamp_print} | New funding = {funding:.3f}%")
+			time.sleep(120)
+	except:
+		# Just in case funding is not working
+		msg_discord = f":warning: **Funding function just stopped working**:dollar:"
+		timestamp_print = timestamp.strftime("%d-%m-%Y %H:%M:%S") # For console
+		webhook = DiscordWebhook(url=url_wb, content=msg_discord)
+		response = webhook.execute()
+		print(f"{timestamp} | {msg_discord}")
+		exit() # ByeBye
 
 # What to do when a message arrives function
 def read_msg(ws, msg):
+	print(msg)
 	# Get data from web-socket
 	timestamp = datetime.now() # For delay
 	timestamp_print = timestamp.strftime("%d-%m-%Y %H:%M:%S") # For console
@@ -92,7 +102,7 @@ def read_msg(ws, msg):
 	usd_limit = 100 # In thousands
 	if usd > usd_limit:
 		webhook = DiscordWebhook(url=url_wb, content=msg_discord)
-		#response = webhook.execute()
+		response = webhook.execute()
 
 # Main websocket_function
 def websocket_function():
