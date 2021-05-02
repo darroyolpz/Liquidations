@@ -46,7 +46,6 @@ def funding_function(symbol=symbol):
 
 # What to do when a message arrives function
 def read_msg(ws, msg):
-	print(msg)
 	# Get data from web-socket
 	timestamp = datetime.now() # For delay
 	timestamp_print = timestamp.strftime("%d-%m-%Y %H:%M:%S") # For console
