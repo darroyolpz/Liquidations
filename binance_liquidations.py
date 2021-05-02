@@ -41,7 +41,7 @@ def funding_function(symbol=symbol):
 		timestamp_print = timestamp.strftime("%d-%m-%Y %H:%M:%S") # For console
 		webhook = DiscordWebhook(url=url_wb, content=msg_discord)
 		response = webhook.execute()
-		print(f"{timestamp} | {msg_discord}")
+		print(f"{timestamp_print} | {msg_discord}")
 		exit() # ByeBye
 
 # What to do when a message arrives function
