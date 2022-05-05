@@ -1,5 +1,11 @@
 # Liquidations
 
+Web socket script for liquidation orders. When there are millions of orders liquidated, it's usually a sign that big players are entering the market, expecting the price to grow or drop.
+
+This script detects those liquidations and send a Discord message for every big liquidated position.
+
+![Discord msg](https://raw.githubusercontent.com/darroyolpz/Liquidations/master/img/discord.jpg)
+
 ## Limit and market orders
 
 For simplicity purpose, we will consider two types of orders: limit and market orders.
