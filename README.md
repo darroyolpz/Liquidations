@@ -58,4 +58,4 @@ When the coin reaches your liquidation price, the exchange close your position a
 
 So finally we reach to this term. If the market is bullish (everyone is positioned in the buy side, expecting the price to grow) and suddenly there is a huge drop in price, this generates a lot of sell orders. These sell orders generate of long liquidity (red box) which is absorbed by those institutional buyers helping them to get positioned.
 
-![Liquidity Pool](https://raw.githubusercontent.com/darroyolpz/AHU-Components/master/img/liquidity_pool.jpg)
+![Liquidity Pool](https://raw.githubusercontent.com/darroyolpz/Liquidations/master/img/liquidity_pool.jpg)
