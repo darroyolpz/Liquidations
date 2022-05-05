@@ -1,8 +1,8 @@
 # Liquidations
 
-Web socket script for liquidation orders. When there are millions of orders liquidated, it's usually a sign that big players are entering the market, expecting the price to grow or drop.
+Web socket script for liquidation orders. When there are millions of liquidated orders, it's usually a sign that big players are being positioned in the market, expecting the price to grow or drop.
 
-This script detects those liquidations and send a Discord message for every big liquidated position.
+This script detects those liquidations and sends a Discord message for every massive liquidated position.
 
 ![Discord msg](https://raw.githubusercontent.com/darroyolpz/Liquidations/master/img/discord.jpg)
 
@@ -10,9 +10,9 @@ This script detects those liquidations and send a Discord message for every big 
 
 For simplicity purpose, we will consider two types of orders: limit and market orders.
 
-Limit orders are resting orders in the book, that wait to be fulfilled at a certain price. For example, if price is at $10, you can place a buy limit order at $9 or a sell limit order at $11.
+**Limit orders** are resting orders in the book, that wait to be fulfilled at a certain price. For example, if price is at $10, you can place a buy limit order at $9 or a sell limit order at $11.
 
-On the order hand, market orders are the one executed at market price. Let's make a short example. Price is still at $10 and in the sell side of the books you have:
+On the order hand, **market orders** are the one executed at market price. Let's make a short example. Price is still at $10 and in the sell side of the books you have:
 
 - At $10 there are $1000 worth of orders
 - At $10.05 there are $5000 worth of orders
@@ -23,17 +23,17 @@ If you market buy $500, price won't move from those $10. But if instead you mark
 
 ## Slippage
 
-From the example above, the price difference from the price before buying ($10) and the price after the purchase ($10.10) is called slippage. Having slippage in a market buy order is bad, since it worsen your position entry.
+From the example above, the price difference from the price before buying ($10) and the price after the purchase ($10.10) is called slippage. Having slippage in a market order is bad, since it worsen your position entry.
 
-This is mainly cause because there are few orders worth in the books, also known as liquidity. A very liquid market is the one where you can market buy massive positions size without experiencing too much slippage.
+This is mainly cause because there are few orders worth in the books, also known as **liquidity**. A very liquid market is the one where you can market buy massive positions size without experiencing too much slippage.
 
 ## Buy and sell
 
-So the million dollar question: why people buy or sell something? 
+So the million dollar question: **Why people buy or sell something?**
 
-Answer is simple: they buy because they expect the price of that asset to grow, and they sell because they expect the price to drop.
+Answer is simple: They buy because they expect the price of that asset to grow, and they sell because they expect the price to drop.
 
-For every buyer there needs to be a seller, and vice versa. So if you want to buy $10M you need someone to sell it to you. If there is no much orders in the market, you need to engineer liquidity.
+For every buyer there needs to be a seller, and vice versa. So if you want to buy $10M you need someone to sell it to you. If there is no much orders in the market, you need to **engineer liquidity**.
 
 
 ## Retail and institutional traders
@@ -65,3 +65,16 @@ When the coin reaches your liquidation price, the exchange close your position a
 So finally we reach to this term. If the market is bullish (everyone is positioned in the buy side, expecting the price to grow) and suddenly there is a huge drop in price, this generates a lot of sell orders. These sell orders generate of long liquidity (red box) which is absorbed by those institutional buyers helping them to get positioned.
 
 ![Liquidity Pool](https://raw.githubusercontent.com/darroyolpz/Liquidations/master/img/liquidity_pool.jpg)
+
+This script reads all the liquidations happening in the exchange, and sends a Discord message when big positions (>$100k) get liquidated.
+
+```python
+# Print message
+msg_discord = f"{emoji} **{direction}{alert_msg}** | ${usd:.1f}k at {price:.0f} | {funding:.3f}% {ending}"
+
+# Discord message for big liquidations
+usd_limit = 100 # In thousands
+if usd > usd_limit:
+	webhook = DiscordWebhook(url=url_wb, content=msg_discord)
+	response = webhook.execute()
+```
