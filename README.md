@@ -23,9 +23,9 @@ If you market buy $500, price won't move from those $10. But if instead you mark
 
 ## Slippage
 
-From the example above, the price difference from the price before buying ($10) and the price after the purchase ($10.10) is called slippage. Having slippage in a market order is bad, since it worsen your position entry.
+From the example above, the price difference from the price before buying ($10) and the price after the purchase ($10.10) is called **slippage**. Having slippage in a market order is bad, since it worsen your position entry.
 
-This is mainly cause because there are few orders worth in the books, also known as **liquidity**. A very liquid market is the one where you can market buy massive positions size without experiencing too much slippage.
+This is mainly cause because there are few orders worth in the books, also known as **liquidity**. A very liquid market is the one where you can market buy/sell massive positions size without experiencing too much slippage.
 
 ## Buy and sell
 
@@ -48,7 +48,7 @@ When people talk about buying a certain coin, they mainly talk about buying on s
 
 This 1:1 relationship is really important, as you can only lose all your money when the coin goes to zero. I'm not saying coins don't go to zero (actually many of them do) but it's much more unlikely than losing 20-30%.
 
-## Futures and Leverage
+## Futures and leverage
 
 Instead of trading on spot (1:1 relationship) we have also the option of trading using leverage. When we talk about leverage, the most common way of using this mechanism is by futures trading.
 
@@ -56,7 +56,7 @@ In short, when trading on futures you don't own the coin itself, but a "contract
 
 Using 10x leverage, if price goes 3% in favor to your position, profit goes up 3% x 10 = 30%. That simple. Of course the risk is, price goes against your position and you lose money at a faster pace.
 
-Many traders are afraid of leverage, because you can lose all your money much faster. In the example above, if price goes 10% against your position, you lose all your money, aka getting liquidated.
+Many traders are afraid of leverage, because you can lose all your money much faster. In the example above, if price goes 10% against your position, you lose all your money, also known as **getting liquidated**.
 
 When the coin reaches your liquidation price, the exchange close your position at market price. This is where liquidity is generated.
 
